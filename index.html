@@ -61,6 +61,9 @@
         .book h3 {
             margin: 5px 0;
         }
+        th.header {
+            font-size: x-large;
+        }
     </style>
 </head>
 <body>
@@ -73,10 +76,10 @@
         <table>
             <thead>
                 <tr>
-                    <th>Genre</th>
-                    <th>On the Shelf</th>
-                    <th>Currently Reading</th>
-                    <th>Finished Reading</th>
+                    <th class="header">Genre</th>
+                    <th class="header">On the Shelf</th>
+                    <th class="header">Currently Reading</th>
+                    <th class="header">Finished Reading</th>
                 </tr>
             </thead>
             <tbody id="books-table-body">
@@ -88,7 +91,7 @@
         // Step 1: Define the function to fetch and display the content
         function fetchAndDisplayCollection() {
             // Step 2: URL of the raw text/html content
-            const url = "https://gist.githubusercontent.com/Bhupesh-V/ecfbb6a7cc7f57051f45968bef8f1f77/raw/5ef9ca1b9d9acdbe834b30244fa880ae885a22e4/bookshelf.json";
+            const url = "https://gist.githubusercontent.com/Bhupesh-V/ecfbb6a7cc7f57051f45968bef8f1f77/raw/bookshelf.json";
 
             // Step 3: Use fetch API to get the content from the URL
             return fetch(url)

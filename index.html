@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Bhupesh Varshney">
+    <meta name="og:title" content="Bhupesh's Bookshelf">
+    <meta name="og:description" content="My IRL bookshelf in digital form">
+    <meta name="og:url" content="https://bookshelf.bhupesh.me">
+    <meta name="og:type" content="website">
+    <meta name="og:site_name" content="Bhupesh's Bookshelf 📚">
+    <meta name="og:locale" content="en_US">
+    <!-- Twitter Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta property="twitter:domain" content="bookshelf.bhupesh.me">
+    <meta property="twitter:url" content="https://bookshelf.bhupesh.me/">
+    <meta name="twitter:title" content="Bhupesh's Bookshelf 📚">
+    <meta name="twitter:description" content="My IRL bookshelf in digital form">
+    <title>Bhupesh's Bookshelf</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            padding: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 15px;
+            text-align: center;
+            vertical-align: top;
+        }
+        th {
+            background-color: #f0f0f0;
+        }
+        th:first-child, td:first-child {
+            width: 100px; /* Set fixed width for Genre column */
+        }
+        .book {
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            padding: 10px;
+            margin-bottom: 10px;
+            background-color: white;
+        }
+        .recommended {
+            background-color: #ffe4b2; /* Highlight color for recommended books */
+        }
+        .book img {
+            width: 100px;
+            height: auto;
+            border-radius: 5px;
+            margin-bottom: 5px;
+        }
+        .book h3 {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+
+    <h1 style="text-align: center;">Bhupesh's Bookshelf</h1>
+    <p align="center">Welcome to my IRL bookshelf in the digital form. The highlighted books are my personal recommendations.</p>
+
+    <!-- Main Bookshelf Section -->
+    <div class="container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Genre</th>
+                    <th>On the Shelf</th>
+                    <th>Currently Reading</th>
+                    <th>Finished Reading</th>
+                </tr>
+            </thead>
+            <tbody id="books-table-body">
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        // Step 1: Define the function to fetch and display the content
+        function fetchAndDisplayCollection() {
+            // Step 2: URL of the raw text/html content
+            const url = "https://gist.githubusercontent.com/Bhupesh-V/ecfbb6a7cc7f57051f45968bef8f1f77/raw/5ef9ca1b9d9acdbe834b30244fa880ae885a22e4/bookshelf.json";
+
+            // Step 3: Use fetch API to get the content from the URL
+            return fetch(url)
+                .then(response => {
+                    // Step 4: Check if the response is ok (status in the range 200-299)
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    // Step 5: Return the JSON content of the response
+                    return response.json();
+                })
+                .catch(error => {
+                    // Step 7: Log any errors to the console
+                    console.error('There was a problem with your fetch operation:', error);
+                });
+        }
+
+        function createBookHTML(book) {
+            const reviewLink = book.review_link ? `<a href="${book.review_link}" target="_blank">My Review</a>` : '';
+            return `
+                <div class="book ${book.recommended ? 'recommended' : ''}">
+                    <h3>${book.title}</h3>
+                    <p><strong>By:</strong> ${book.author}</p>
+                    ${reviewLink}
+                </div>
+            `;
+        }
+
+        function loadBooks() {
+            fetchAndDisplayCollection().then(books => {
+                const booksTableBody = document.getElementById('books-table-body');
+                const genres = {};
+
+                // Group books by genre
+                books.forEach(book => {
+                    if (!genres[book.genre]) {
+                        genres[book.genre] = {
+                            currently_reading: '',
+                            on_the_shelf: '',
+                            read: ''
+                        };
+                    }
+
+                    const bookHTML = createBookHTML(book);
+
+                    if (book.status === "currently_reading") {
+                        genres[book.genre].currently_reading += bookHTML;
+                    } else if (book.status === "on_the_shelf") {
+                        genres[book.genre].on_the_shelf += bookHTML;
+                    } else if (book.status === "read") {
+                        genres[book.genre].read += bookHTML;
+                    }
+                });
+
+                // Add rows to the table for each genre
+                for (const genre in genres) {
+                    booksTableBody.innerHTML += `
+                        <tr>
+                            <td><strong>${genre}</strong></td>
+                            <td>${genres[genre].on_the_shelf || ''}</td>
+                            <td>${genres[genre].currently_reading || ''}</td>
+                            <td>${genres[genre].read || ''}</td>
+                        </tr>
+                    `;
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', loadBooks);
+    </script>
+
+</body>
+</html>

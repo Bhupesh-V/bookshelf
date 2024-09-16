@@ -140,23 +140,17 @@
     </div>
 
     <script>
-        // Step 1: Define the function to fetch and display the content
         function fetchAndDisplayCollection() {
-            // Step 2: URL of the raw text/html content
             const url = "https://gist.githubusercontent.com/Bhupesh-V/ecfbb6a7cc7f57051f45968bef8f1f77/raw/bookshelf.json";
 
-            // Step 3: Use fetch API to get the content from the URL
             return fetch(url)
                 .then(response => {
-                    // Step 4: Check if the response is ok (status in the range 200-299)
                     if (!response.ok) {
                         throw new Error('Network response was not ok');
                     }
-                    // Step 5: Return the JSON content of the response
                     return response.json();
                 })
                 .catch(error => {
-                    // Step 7: Log any errors to the console
                     console.error('There was a problem with your fetch operation:', error);
                 });
         }
@@ -166,7 +160,7 @@
             return `
                 <div class="book ${book.recommended ? 'recommended' : ''}">
                     <h3>${book.title}</h3>
-                    <p><strong>By:</strong> ${book.author}</p>
+                    <p><strong>By</strong> <i>${book.author}</i></p>
                     ${reviewLink}
                 </div>
             `;

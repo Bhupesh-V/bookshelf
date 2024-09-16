@@ -18,10 +18,13 @@
     <meta property="twitter:url" content="https://bookshelf.bhupesh.me/">
     <meta name="twitter:title" content="Bhupesh's Bookshelf 📚">
     <meta name="twitter:description" content="My IRL bookshelf in digital form">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Gentium+Book+Plus:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
     <title>Bhupesh's Bookshelf 📚</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: "Gentium Book Plus", serif;
             margin: 0;
             padding: 0;
             background-color: floralwhite;
@@ -44,6 +47,7 @@
         }
         th:first-child, td:first-child {
             width: 100px; /* Set fixed width for Genre column */
+            padding: 6px;
         }
         .book {
             border: 1px solid #ccc;
@@ -121,7 +125,7 @@
 <body>
 
     <h1 style="text-align: center;"><a href="https://bhupesh.me/">Bhupesh's</a> Bookshelf</h1>
-    <p align="center">Welcome to my IRL bookshelf in the digital form. The <span style="background-color: #ffe4b2;">highlighted</span> books are my personal recommendations.</p>
+    <p align="center">Welcome to my IRL bookshelf in the digital form. The <span style="background-color: #ffe4b2;">highlighted</span> books are my recommendations.</p>
 
     <!-- Main Bookshelf Section -->
     <div class="container">
@@ -129,9 +133,9 @@
             <thead>
                 <tr>
                     <th class="header">Genre</th>
-                    <th class="header">On the Shelf</th>
-                    <th class="header">Currently Reading</th>
-                    <th class="header">Finished Reading</th>
+                    <th class="header" id="on-the-shelf-header">On the Shelf</th>
+                    <th class="header" id="currently-reading-header">Currently Reading</th>
+                    <th class="header" id="finished-reading-header">Finished Reading</th>
                 </tr>
             </thead>
             <tbody id="books-table-body">
@@ -170,6 +174,9 @@
             fetchAndDisplayCollection().then(books => {
                 const booksTableBody = document.getElementById('books-table-body');
                 const genres = {};
+                let onTheShelfCount = 0;
+                let currentlyReadingCount = 0;
+                let finishedReadingCount = 0;
 
                 // Group books by genre
                 books.forEach(book => {
@@ -185,12 +192,20 @@
 
                     if (book.status === "currently_reading") {
                         genres[book.genre].currently_reading += bookHTML;
+                        currentlyReadingCount++;
                     } else if (book.status === "on_the_shelf") {
                         genres[book.genre].on_the_shelf += bookHTML;
+                        onTheShelfCount++;
                     } else if (book.status === "read") {
                         genres[book.genre].read += bookHTML;
+                        finishedReadingCount++;
                     }
                 });
+
+                // Update headers with counts
+                document.getElementById('on-the-shelf-header').innerText = `On the Shelf (${onTheShelfCount})`;
+                document.getElementById('currently-reading-header').innerText = `Currently Reading (${currentlyReadingCount})`;
+                document.getElementById('finished-reading-header').innerText = `Finished Reading (${finishedReadingCount})`;
 
                 // Add rows to the table for each genre
                 for (const genre in genres) {

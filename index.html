@@ -1,231 +1,291 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📚</text></svg>"
-    <meta name="author" content="Bhupesh Varshney">
-    <meta name="description" content="My IRL bookshelf in digital form. Browse through to find your next great read.">
-    <meta name="og:title" content="Explore Bhupesh's Curated Bookshelf 📚">
-    <meta name="og:description" content="My IRL bookshelf in digital form. Browse through to find your next great read.">
-    <meta name="og:url" content="https://bookshelf.bhupesh.me">
-    <meta name="og:type" content="website">
-    <meta name="og:site_name" content="Bhupesh's Bookshelf 📚">
-    <meta name="og:locale" content="en_US">
-    <meta name="og:image" content="https://bhupesh.me/images/headshot.jpg">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📚</text></svg>"
+      <meta
+      name="author"
+      content="Bhupesh Varshney"
+    />
+    <meta
+      name="description"
+      content="My IRL bookshelf in digital form. Browse through to find your next great read."
+    />
+    <meta name="og:title" content="Explore Bhupesh's Curated Bookshelf 📚" />
+    <meta
+      name="og:description"
+      content="My IRL bookshelf in digital form. Browse through to find your next great read."
+    />
+    <meta name="og:url" content="https://bookshelf.bhupesh.me" />
+    <meta name="og:type" content="website" />
+    <meta name="og:site_name" content="Bhupesh's Bookshelf 📚" />
+    <meta name="og:locale" content="en_US" />
+    <meta name="og:image" content="https://bhupesh.me/images/headshot.jpg" />
     <!-- Twitter Meta Tags -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta property="twitter:domain" content="bookshelf.bhupesh.me">
-    <meta property="twitter:url" content="https://bookshelf.bhupesh.me/">
-    <meta name="twitter:image" content="https://bhupesh.me/images/headshot.jpg">
-    <meta name="twitter:title" content="Explore Bhupesh's Curated Bookshelf 📚">
-    <meta name="twitter:description" content="My IRL bookshelf in digital form. Browse through to find your next great read.">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Gentium+Book+Plus:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta property="twitter:domain" content="bookshelf.bhupesh.me" />
+    <meta property="twitter:url" content="https://bookshelf.bhupesh.me/" />
+    <meta
+      name="twitter:image"
+      content="https://bhupesh.me/images/headshot.jpg"
+    />
+    <meta
+      name="twitter:title"
+      content="Explore Bhupesh's Curated Bookshelf 📚"
+    />
+    <meta
+      name="twitter:description"
+      content="My IRL bookshelf in digital form. Browse through to find your next great read."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Gentium+Book+Plus:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+      rel="stylesheet"
+    />
     <title>Bhupesh's Bookshelf 📚</title>
     <style>
-        body {
-            font-family: "Gentium Book Plus", serif;
-            margin: 0;
-            padding: 0;
-            background-color: floralwhite;
+      body {
+        font-family: "Gentium Book Plus", serif;
+        margin: 0;
+        padding: 0;
+        background-color: floralwhite;
+      }
+      .container {
+        padding: 10px;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      th,
+      td {
+        border: 1px solid #ccc;
+        padding: 10px;
+        text-align: center;
+        vertical-align: top;
+      }
+      th {
+        background-color: #f0f0f0;
+      }
+      th:first-child,
+      td:first-child {
+        width: 100px; /* Set fixed width for Genre column */
+        padding: 6px;
+      }
+      .book {
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        padding: 10px;
+        margin-bottom: 10px;
+        background-color: floralwhite;
+        box-shadow: 3px 3px;
+      }
+      .recommended {
+        background-color: #ffe4b2; /* Highlight color for recommended books */
+      }
+      .book img {
+        width: 100%;
+        height: auto;
+        border-radius: 5px;
+        margin-bottom: 5px;
+      }
+      .book h3 {
+        margin: 5px 0;
+      }
+      th.header {
+        font-size: x-large;
+      }
+
+      h1 {
+        text-align: center;
+        font-size: 2em;
+        margin: 20px 0;
+      }
+
+      p {
+        text-align: center;
+        font-size: 1em;
+        margin: 10px 0;
+      }
+
+      /* Media Queries for Responsive Design */
+      @media (max-width: 768px) {
+        th.header {
+          font-size: large;
+        }
+        th:first-child,
+        td:first-child {
+          width: auto;
         }
         .container {
-            padding: 10px;
+          padding: 10px;
         }
-        table {
-            width: 100%;
-            border-collapse: collapse;
+        h1 {
+          font-size: 1.5em;
         }
-        th, td {
-            border: 1px solid #ccc;
-            padding: 10px;
-            text-align: center;
-            vertical-align: top;
+        p {
+          font-size: 0.9em;
         }
-        th {
-            background-color: #f0f0f0;
-        }
-        th:first-child, td:first-child {
-            width: 100px; /* Set fixed width for Genre column */
-            padding: 6px;
-        }
+      }
+
+      @media (max-width: 480px) {
         .book {
-            border: 1px solid #ccc;
-            border-radius: 10px;
-            padding: 10px;
-            margin-bottom: 10px;
-            background-color: floralwhite;
-            box-shadow: 3px 3px;
-        }
-        .recommended {
-            background-color: #ffe4b2; /* Highlight color for recommended books */
-        }
-        .book img {
-            width: 100%;
-            height: auto;
-            border-radius: 5px;
-            margin-bottom: 5px;
+          padding: 5px;
         }
         .book h3 {
-            margin: 5px 0;
+          font-size: medium;
         }
-        th.header {
-            font-size: x-large;
+        th,
+        td {
+          padding: 10px;
         }
-    
         h1 {
-            text-align: center;
-            font-size: 2em;
-            margin: 20px 0;
+          font-size: 1.2em;
         }
-    
         p {
-            text-align: center;
-            font-size: 1em;
-            margin: 10px 0;
+          font-size: 0.8em;
         }
-    
-        /* Media Queries for Responsive Design */
-        @media (max-width: 768px) {
-            th.header {
-                font-size: large;
-            }
-            th:first-child, td:first-child {
-                width: auto;
-            }
-            .container {
-                padding: 10px;
-            }
-            h1 {
-                font-size: 1.5em;
-            }
-            p {
-                font-size: 0.9em;
-            }
-        }
-    
-        @media (max-width: 480px) {
-            .book {
-                padding: 5px;
-            }
-            .book h3 {
-                font-size: medium;
-            }
-            th, td {
-                padding: 10px;
-            }
-            h1 {
-                font-size: 1.2em;
-            }
-            p {
-                font-size: 0.8em;
-            }
-        }
+      }
     </style>
-</head>
-<body>
-
-    <h1 style="text-align: center;"><a href="https://bhupesh.me/">Bhupesh's</a> Bookshelf 📚</h1>
-    <p align="center">Welcome to my IRL bookshelf in the digital form. The <span style="background-color: #ffe4b2;">highlighted</span> books are my recommendations.</p>
+  </head>
+  <body>
+    <h1 style="text-align: center">
+      <a href="https://bhupesh.me/">Bhupesh's</a> Bookshelf 📚
+    </h1>
+    <p align="center">
+      Welcome to my IRL bookshelf in the digital form. The
+      <span style="background-color: #ffe4b2">highlighted</span> books are my
+      recommendations.
+    </p>
 
     <!-- Main Bookshelf Section -->
     <div class="container">
-        <table>
-            <thead>
-                <tr>
-                    <th class="header">Genre</th>
-                    <th class="header" id="on-the-shelf-header">On the Shelf</th>
-                    <th class="header" id="currently-reading-header">Currently Reading</th>
-                    <th class="header" id="finished-reading-header">Finished Reading</th>
-                </tr>
-            </thead>
-            <tbody id="books-table-body">
-            </tbody>
-        </table>
+      <table>
+        <thead>
+          <tr>
+            <th class="header">Genre</th>
+            <th class="header" id="on-the-shelf-header">On the Shelf</th>
+            <th class="header" id="currently-reading-header">
+              Currently Reading
+            </th>
+            <th class="header" id="finished-reading-header">
+              Finished Reading
+            </th>
+          </tr>
+        </thead>
+        <tbody id="books-table-body"></tbody>
+      </table>
     </div>
 
     <script>
-        function fetchAndDisplayCollection() {
-            const url = "https://gist.githubusercontent.com/Bhupesh-V/ecfbb6a7cc7f57051f45968bef8f1f77/raw/bookshelf.json";
+      function fetchAndDisplayCollection() {
+        const url =
+          "https://gist.githubusercontent.com/Bhupesh-V/ecfbb6a7cc7f57051f45968bef8f1f77/raw/bookshelf.json";
 
-            return fetch(url)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.json();
-                })
-                .catch(error => {
-                    console.error('There was a problem with your fetch operation:', error);
-                });
-        }
+        return fetch(url)
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("Network response was not ok");
+            }
+            return response.json();
+          })
+          .catch((error) => {
+            console.error(
+              "There was a problem with your fetch operation:",
+              error
+            );
+          });
+      }
 
-        function createBookHTML(book) {
-            const reviewLink = book.review_link ? `<a href="${book.review_link}" target="_blank">My Review</a>` : '';
-            return `
-                <div class="book ${book.recommended ? 'recommended' : ''}">
+      function createBookHTML(book) {
+        const reviewLink = book.review_link
+          ? `<a href="${book.review_link}" target="_blank">My Review</a>`
+          : "";
+        return `
+                <div class="book ${book.recommended ? "recommended" : ""}">
                     <h3>${book.title}</h3>
                     <p><strong>By</strong> <i>${book.author}</i></p>
                     ${reviewLink}
                 </div>
             `;
-        }
+      }
 
-        function loadBooks() {
-            fetchAndDisplayCollection().then(books => {
-                const booksTableBody = document.getElementById('books-table-body');
-                const genres = {};
-                let onTheShelfCount = 0;
-                let currentlyReadingCount = 0;
-                let finishedReadingCount = 0;
+      function loadBooks() {
+        fetchAndDisplayCollection().then((books) => {
+          const booksTableBody = document.getElementById("books-table-body");
+          const genres = {};
+          let onTheShelfCount = 0;
+          let currentlyReadingCount = 0;
+          let finishedReadingCount = 0;
 
-                // Group books by genre
-                books.forEach(book => {
-                    if (!genres[book.genre]) {
-                        genres[book.genre] = {
-                            currently_reading: '',
-                            on_the_shelf: '',
-                            read: ''
-                        };
-                    }
+          // Group books by genre
+          books.forEach((book) => {
+            if (!genres[book.genre]) {
+              genres[book.genre] = {
+                currently_reading: "",
+                on_the_shelf: "",
+                read: "",
+              };
+            }
 
-                    const bookHTML = createBookHTML(book);
+            const bookHTML = createBookHTML(book);
 
-                    if (book.status === "currently_reading") {
-                        genres[book.genre].currently_reading += bookHTML;
-                        currentlyReadingCount++;
-                    } else if (book.status === "on_the_shelf") {
-                        genres[book.genre].on_the_shelf += bookHTML;
-                        onTheShelfCount++;
-                    } else if (book.status === "read") {
-                        genres[book.genre].read += bookHTML;
-                        finishedReadingCount++;
-                    }
-                });
+            if (book.status === "currently_reading") {
+              genres[book.genre].currently_reading += bookHTML;
+              currentlyReadingCount++;
+            } else if (book.status === "on_the_shelf") {
+              genres[book.genre].on_the_shelf += bookHTML;
+              onTheShelfCount++;
+            } else if (book.status === "read") {
+              genres[book.genre].read += bookHTML;
+              finishedReadingCount++;
+            }
+          });
 
-                // Update headers with counts
-                document.getElementById('on-the-shelf-header').innerText = `On the Shelf (${onTheShelfCount})`;
-                document.getElementById('currently-reading-header').innerText = `Currently Reading (${currentlyReadingCount})`;
-                document.getElementById('finished-reading-header').innerText = `Finished Reading (${finishedReadingCount})`;
+          // Update headers with counts
+          document.getElementById(
+            "on-the-shelf-header"
+          ).innerText = `On the Shelf (${onTheShelfCount})`;
+          document.getElementById(
+            "currently-reading-header"
+          ).innerText = `Currently Reading (${currentlyReadingCount})`;
+          document.getElementById(
+            "finished-reading-header"
+          ).innerText = `Finished Reading (${finishedReadingCount})`;
 
-                // Add rows to the table for each genre
-                for (const genre in genres) {
-                    booksTableBody.innerHTML += `
+          // Add rows to the table for each genre
+          for (const genre in genres) {
+            booksTableBody.innerHTML += `
                         <tr>
                             <td><strong>${genre}</strong></td>
-                            <td>${genres[genre].on_the_shelf || ''}</td>
-                            <td>${genres[genre].currently_reading || ''}</td>
-                            <td>${genres[genre].read || ''}</td>
+                            <td>${genres[genre].on_the_shelf || ""}</td>
+                            <td>${genres[genre].currently_reading || ""}</td>
+                            <td>${genres[genre].read || ""}</td>
                         </tr>
                     `;
-                }
-            });
-        }
+          }
+        });
+      }
 
-        document.addEventListener('DOMContentLoaded', loadBooks);
+      document.addEventListener("DOMContentLoaded", loadBooks);
     </script>
+    <!-- Google tag (gtag.js) -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-5SS34KJJ0T"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
 
-</body>
+      gtag("config", "G-5SS34KJJ0T");
+    </script>
+  </body>
 </html>

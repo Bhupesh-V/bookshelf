@@ -91,7 +91,7 @@
     }
 
     th.header {
-      font-size: x-large;
+      font-size: x-medium;
     }
 
     h1 {
@@ -108,17 +108,9 @@
 
     /* Media Queries for Responsive Design */
     @media (max-width: 768px) {
-      th.header {
-        font-size: large;
-      }
-
       th:first-child,
       td:first-child {
         width: auto;
-      }
-
-      .container {
-        padding: 10px;
       }
 
       h1 {
@@ -225,7 +217,7 @@
         : "";
       return `
                 <div class="book ${book.recommended ? "recommended" : ""}">
-                    <h3>${book.title}</h3>
+                    <p style="font-weight: bold;">${book.title}</p>
                     <p><strong>By</strong> <i>${book.author}</i></p>
                     ${reviewLink}
                 </div>

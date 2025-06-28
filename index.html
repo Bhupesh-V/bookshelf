@@ -314,7 +314,7 @@
             `;
     }
 
-    function loadBooks() {
+    async function loadBooks() {
       fetchAndDisplayCollection().then((books) => {
         const booksTableBody = document.getElementById("books-table-body");
         const genres = {};
@@ -371,7 +371,7 @@
       });
     }
 
-    function updateLastUpdatedTime() {
+    async function updateLastUpdatedTime() {
       fetchGistMetadata().then((data) => {
         const options = { day: '2-digit', month: 'long', year: 'numeric' };
         const lastUpdated = new Date(data.updated_at).toLocaleDateString('en-US', options);
@@ -381,8 +381,14 @@
     }
 
     document.addEventListener("DOMContentLoaded", () => {
-      loadBooks();
-      updateLastUpdatedTime();
+      Promise.all([
+        loadBooks(),
+        updateLastUpdatedTime()
+      ]).then(() => {
+        console.log("Bookshelf data loaded successfully.");
+      }).catch((error) => {
+        console.error("Error loading bookshelf data:", error);
+      });
 
       // Close modal when clicking the close button or outside the modal
       const modal = document.getElementById('thoughtsModal');

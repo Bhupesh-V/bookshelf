@@ -252,37 +252,14 @@
   </div>
 
   <script>
-    function fetchAndDisplayCollection() {
-      const url =
-        "https://gist.githubusercontent.com/Bhupesh-V/ecfbb6a7cc7f57051f45968bef8f1f77/raw/bookshelf.json";
-
-      return fetch(url)
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error("Network response was not ok");
-          }
-          return response.json();
-        })
-        .catch((error) => {
-          console.error(
-            "There was a problem with your fetch operation:",
-            error
-          );
-        });
+    async function fetchBooks() {
+      const response = await fetch("https://gist.githubusercontent.com/Bhupesh-V/ecfbb6a7cc7f57051f45968bef8f1f77/raw/bookshelf.json");
+      return response.json();
     }
 
-    function fetchGistMetadata() {
-      const gistUrl = "https://api.github.com/gists/ecfbb6a7cc7f57051f45968bef8f1f77";
-      return fetch(gistUrl)
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error("Network response was not ok");
-          }
-          return response.json();
-        })
-        .catch((error) => {
-          console.error("There was a problem with your fetch operation:", error);
-        });
+    async function fetchGistMetadata() {
+      const response = await fetch("https://api.github.com/gists/ecfbb6a7cc7f57051f45968bef8f1f77");
+      return response.json();
     }
 
     function showThoughts(title, thoughts) {
@@ -315,7 +292,7 @@
     }
 
     async function loadBooks() {
-      fetchAndDisplayCollection().then((books) => {
+      fetchBooks().then((books) => {
         const booksTableBody = document.getElementById("books-table-body");
         const genres = {};
         let onTheShelfCount = 0;
@@ -360,13 +337,13 @@
         // Add rows to the table for each genre
         for (const genre in genres) {
           booksTableBody.innerHTML += `
-                        <tr>
-                            <td><strong>${genre}</strong></td>
-                            <td>${genres[genre].on_the_shelf || ""}</td>
-                            <td>${genres[genre].currently_reading || ""}</td>
-                            <td>${genres[genre].read || ""}</td>
-                        </tr>
-                    `;
+              <tr>
+                  <td><strong>${genre}</strong></td>
+                  <td>${genres[genre].on_the_shelf || ""}</td>
+                  <td>${genres[genre].currently_reading || ""}</td>
+                  <td>${genres[genre].read || ""}</td>
+              </tr>
+          `;
         }
       });
     }

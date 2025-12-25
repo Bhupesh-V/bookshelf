@@ -41,6 +41,49 @@
       padding: 10px;
     }
 
+    /* Tab Styles */
+    .tab-radio {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .tabs {
+      display: flex;
+      justify-content: center;
+      margin: 20px 0;
+      border-bottom: 2px solid #ccc;
+    }
+
+    .tabs label {
+      padding: 10px 30px;
+      cursor: pointer;
+      font-size: 1.1em;
+      color: #666;
+      border-bottom: 3px solid transparent;
+      transition: all 0.3s;
+    }
+
+    .tabs label:hover {
+      color: #000;
+    }
+
+    #tab-bookshelf:checked~.tabs label[for="tab-bookshelf"],
+    #tab-wishlist:checked~.tabs label[for="tab-wishlist"] {
+      color: #000;
+      border-bottom: 3px solid #000;
+      font-weight: bold;
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    #tab-bookshelf:checked~.tabs-container #content-bookshelf,
+    #tab-wishlist:checked~.tabs-container #content-wishlist {
+      display: block;
+    }
+
     table {
       width: 100%;
       border-collapse: collapse;
@@ -104,6 +147,49 @@
       text-align: center;
       font-size: 1em;
       margin: 10px 0;
+    }
+
+    /* Wishlist Styles */
+    .wishlist-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .wishlist-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .wishlist-item {
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      padding: 15px;
+      background-color: floralwhite;
+      box-shadow: 3px 3px;
+    }
+
+    .wishlist-item h3 {
+      margin: 0 0 10px 0;
+      font-size: 1.2em;
+    }
+
+    .wishlist-item .author {
+      color: #666;
+      font-style: italic;
+      margin: 5px 0;
+      font-size: medium;
+    }
+
+    .wishlist-item .genre {
+      display: inline-block;
+      background-color: #f0f0f0;
+      padding: 3px 10px;
+      border-radius: 5px;
+      font-size: 0.85em;
+      margin-top: 10px;
     }
 
     /* Modal Styles */
@@ -182,6 +268,15 @@
       .modal-content {
         max-width: 90%;
       }
+
+      .tabs label {
+        padding: 10px 20px;
+        font-size: 1em;
+      }
+
+      .wishlist-grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      }
     }
 
     @media (max-width: 480px) {
@@ -205,6 +300,15 @@
       p {
         font-size: 0.8em;
       }
+
+      .tabs label {
+        padding: 8px 15px;
+        font-size: 0.9em;
+      }
+
+      .wishlist-grid {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
@@ -220,23 +324,43 @@
   </p>
   <p id="last-updated"></p>
 
-  <!-- Main Bookshelf Section -->
+  <!-- Tabs -->
   <div class="container">
-    <table>
-      <thead>
-        <tr>
-          <th class="header">Genre</th>
-          <th class="header" id="on-the-shelf-header">On the Shelf</th>
-          <th class="header" id="currently-reading-header">
-            Currently Reading
-          </th>
-          <th class="header" id="finished-reading-header">
-            Finished Reading
-          </th>
-        </tr>
-      </thead>
-      <tbody id="books-table-body"></tbody>
-    </table>
+    <input type="radio" name="tabs" id="tab-bookshelf" class="tab-radio" checked />
+    <input type="radio" name="tabs" id="tab-wishlist" class="tab-radio" />
+
+    <div class="tabs">
+      <label for="tab-bookshelf">📚 My Shelf</label>
+      <label for="tab-wishlist">🛒 Wishlist</label>
+    </div>
+
+    <div class="tabs-container">
+      <!-- Bookshelf Tab Content -->
+      <div id="content-bookshelf" class="tab-content">
+        <table>
+          <thead>
+            <tr>
+              <th class="header">Genre</th>
+              <th class="header" id="on-the-shelf-header">On the Shelf</th>
+              <th class="header" id="currently-reading-header">
+                Currently Reading
+              </th>
+              <th class="header" id="finished-reading-header">
+                Finished Reading
+              </th>
+            </tr>
+          </thead>
+          <tbody id="books-table-body"></tbody>
+        </table>
+      </div>
+
+      <!-- Wishlist Tab Content -->
+      <div id="content-wishlist" class="tab-content">
+        <div class="wishlist-container">
+          <div class="wishlist-grid" id="wishlist-grid"></div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- Thoughts Modal -->
@@ -259,6 +383,11 @@
 
     async function fetchGistMetadata() {
       const response = await fetch("https://api.github.com/gists/ecfbb6a7cc7f57051f45968bef8f1f77");
+      return response.json();
+    }
+
+    async function fetchWishlist() {
+      const response = await fetch("https://gist.githubusercontent.com/Bhupesh-V/22c83b506d72b78d65a8b997d017881d/raw/wishlist.json");
       return response.json();
     }
 
@@ -348,6 +477,23 @@
       });
     }
 
+    async function loadWishlist() {
+      fetchWishlist().then((wishlist) => {
+        const wishlistGrid = document.getElementById("wishlist-grid");
+
+        wishlist.forEach((item) => {
+          const wishlistItem = `
+            <div class="wishlist-item">
+              <h3>${item.title}</h3>
+              <p class="author">By ${item.author}</p>
+              <span class="genre">${item.genre}</span>
+            </div>
+          `;
+          wishlistGrid.innerHTML += wishlistItem;
+        });
+      });
+    }
+
     async function updateLastUpdatedTime() {
       fetchGistMetadata().then((data) => {
         const options = { day: '2-digit', month: 'long', year: 'numeric' };
@@ -360,6 +506,7 @@
     document.addEventListener("DOMContentLoaded", () => {
       Promise.all([
         loadBooks(),
+        loadWishlist(),
         updateLastUpdatedTime()
       ]).then(() => {
         console.log("Bookshelf data loaded successfully.");

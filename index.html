@@ -357,6 +357,9 @@
       <!-- Wishlist Tab Content -->
       <div id="content-wishlist" class="tab-content">
         <div class="wishlist-container">
+          <p style="text-align: center; font-size: 1.1em; margin-bottom: 20px;">
+            <strong><span id="wishlist-count">0</span></strong> books yet to read.
+          </p>
           <div class="wishlist-grid" id="wishlist-grid"></div>
         </div>
       </div>
@@ -480,6 +483,10 @@
     async function loadWishlist() {
       fetchWishlist().then((wishlist) => {
         const wishlistGrid = document.getElementById("wishlist-grid");
+        const wishlistCount = document.getElementById("wishlist-count");
+
+        // Update the count
+        wishlistCount.textContent = wishlist.length;
 
         wishlist.forEach((item) => {
           const wishlistItem = `

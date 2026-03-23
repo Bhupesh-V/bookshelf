@@ -192,6 +192,47 @@
       margin-top: 10px;
     }
 
+    /* Genre Summary Styles */
+    .genre-summary {
+      max-width: 600px;
+      margin: 20px auto;
+      padding: 15px;
+      background-color: #f9f9f9;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .genre-summary h3 {
+      margin-top: 0;
+      text-align: center;
+      font-size: 1.2em;
+    }
+
+    .genre-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    .genre-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 12px;
+      background-color: floralwhite;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+
+    .genre-item .genre-name {
+      font-weight: bold;
+    }
+
+    .genre-item .genre-count {
+      color: #666;
+    }
+
     /* Modal Styles */
     .modal {
       display: none;
@@ -277,6 +318,10 @@
       .wishlist-grid {
         grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
       }
+
+      .genre-list {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      }
     }
 
     @media (max-width: 480px) {
@@ -307,6 +352,10 @@
       }
 
       .wishlist-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .genre-list {
         grid-template-columns: 1fr;
       }
     }
@@ -360,6 +409,13 @@
           <p style="text-align: center; font-size: 1.1em; margin-bottom: 20px;">
             <strong><span id="wishlist-count">0</span></strong> books yet to read.
           </p>
+          
+          <!-- Genre Summary Section -->
+          <div class="genre-summary">
+            <h3>🤓 Interests by Genre</h3>
+            <div class="genre-list" id="genre-list"></div>
+          </div>
+
           <div class="wishlist-grid" id="wishlist-grid"></div>
         </div>
       </div>
@@ -484,9 +540,30 @@
       fetchWishlist().then((wishlist) => {
         const wishlistGrid = document.getElementById("wishlist-grid");
         const wishlistCount = document.getElementById("wishlist-count");
+        const genreList = document.getElementById("genre-list");
 
         // Update the count
         wishlistCount.textContent = wishlist.length;
+
+        // Calculate genre counts
+        const genreCounts = {};
+        wishlist.forEach((item) => {
+          genreCounts[item.genre] = (genreCounts[item.genre] || 0) + 1;
+        });
+
+        // Populate genre summary
+        genreList.innerHTML = "";
+        Object.entries(genreCounts)
+          .sort((a, b) => b[1] - a[1]) // Sort by count descending
+          .forEach(([genre, count]) => {
+            const genreItem = `
+              <div class="genre-item">
+                <span class="genre-name">${genre}</span>
+                <span class="genre-count">${count}</span>
+              </div>
+            `;
+            genreList.innerHTML += genreItem;
+          });
 
         wishlist.forEach((item) => {
           const wishlistItem = `

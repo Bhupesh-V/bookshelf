@@ -87,6 +87,7 @@
     table {
       width: 100%;
       border-collapse: collapse;
+      min-width: 600px;
     }
 
     th,
@@ -289,6 +290,12 @@
       border-radius: 4px;
     }
 
+    .table-wrapper {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      margin: 0 -10px;
+      padding: 0 10px;
+    }
 
     /* Media Queries for Responsive Design */
     @media (max-width: 768px) {
@@ -296,6 +303,32 @@
       th:first-child,
       td:first-child {
         width: auto;
+        min-width: 60px;
+        font-size: 0.85em;
+      }
+
+      .table-wrapper {
+        margin: 0;
+      }
+
+      table {
+        min-width: 100%;
+        font-size: 0.9em;
+      }
+
+      th,
+      td {
+        padding: 8px 5px;
+      }
+
+      .book {
+        padding: 8px;
+        margin-bottom: 8px;
+      }
+
+      .book p {
+        font-size: 0.9em;
+        margin: 3px 0;
       }
 
       h1 {
@@ -325,6 +358,27 @@
     }
 
     @media (max-width: 480px) {
+
+      th:first-child,
+      td:first-child {
+        min-width: 50px;
+        font-size: 0.75em;
+        padding: 6px 3px;
+      }
+
+      table {
+        font-size: 0.85em;
+      }
+
+      th,
+      td {
+        padding: 6px 3px;
+      }
+
+      th.header {
+        font-size: small;
+      }
+
       .book {
         padding: 5px;
       }
@@ -333,9 +387,18 @@
         font-size: medium;
       }
 
-      th,
-      td {
-        padding: 10px;
+      .book p {
+        font-size: 0.85em;
+        margin: 2px 0;
+      }
+
+      .book p strong {
+        font-size: 0.9em;
+      }
+
+      .thoughts-btn {
+        font-size: 0.7em;
+        padding: 3px 6px;
       }
 
       h1 {
@@ -386,21 +449,23 @@
     <div class="tabs-container">
       <!-- Bookshelf Tab Content -->
       <div id="content-bookshelf" class="tab-content">
-        <table>
-          <thead>
-            <tr>
-              <th class="header">Genre</th>
-              <th class="header" id="on-the-shelf-header">On the Shelf</th>
-              <th class="header" id="currently-reading-header">
-                Currently Reading
-              </th>
-              <th class="header" id="finished-reading-header">
-                Finished Reading
-              </th>
-            </tr>
-          </thead>
-          <tbody id="books-table-body"></tbody>
-        </table>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th class="header">Genre</th>
+                <th class="header" id="on-the-shelf-header">On the Shelf</th>
+                <th class="header" id="currently-reading-header">
+                  Currently Reading
+                </th>
+                <th class="header" id="finished-reading-header">
+                  Finished Reading
+                </th>
+              </tr>
+            </thead>
+            <tbody id="books-table-body"></tbody>
+          </table>
+        </div>
       </div>
 
       <!-- Wishlist Tab Content -->
@@ -409,7 +474,7 @@
           <p style="text-align: center; font-size: 1.1em; margin-bottom: 20px;">
             <strong><span id="wishlist-count">0</span></strong> books yet to read.
           </p>
-          
+
           <!-- Genre Summary Section -->
           <div class="genre-summary">
             <h3>🤓 Interests by Genre</h3>

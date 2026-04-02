@@ -200,6 +200,52 @@ p {
   color: #666;
 }
 
+/* Genre Filter Styles */
+.genre-filter {
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 15px;
+  background-color: #f9f9f9;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.genre-filter label {
+  font-weight: bold;
+  font-size: 1em;
+}
+
+.genre-select {
+  padding: 8px 16px;
+  background-color: floralwhite;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.9em;
+  font-family: "Gentium Book Plus", serif;
+  min-width: 200px;
+  transition: all 0.3s;
+}
+
+.genre-select:hover {
+  border-color: #999;
+}
+
+.genre-select:focus {
+  outline: none;
+  border-color: #000;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+.wishlist-item.hidden {
+  display: none;
+}
+
 /* Modal Styles */
 .modal {
   display: none;

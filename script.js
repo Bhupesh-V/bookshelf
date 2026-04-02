@@ -104,6 +104,7 @@ async function loadWishlist() {
     const wishlistGrid = document.getElementById("wishlist-grid");
     const wishlistCount = document.getElementById("wishlist-count");
     const genreList = document.getElementById("genre-list");
+    const genreSelect = document.getElementById("genre-select");
 
     // Update the count
     wishlistCount.textContent = wishlist.length;
@@ -128,9 +129,26 @@ async function loadWishlist() {
         genreList.innerHTML += genreItem;
       });
 
+    // Populate dropdown options
+    Object.keys(genreCounts)
+      .sort()
+      .forEach((genre) => {
+        const option = document.createElement('option');
+        option.value = genre;
+        option.textContent = genre;
+        genreSelect.appendChild(option);
+      });
+
+    // Add change event listener to dropdown
+    genreSelect.addEventListener('change', (e) => {
+      filterWishlistByGenre(e.target.value);
+    });
+
+    // Populate wishlist items
+    wishlistGrid.innerHTML = "";
     wishlist.forEach((item) => {
       const wishlistItem = `
-        <div class="wishlist-item">
+        <div class="wishlist-item" data-genre="${item.genre}">
           <h3>${item.title}</h3>
           <p class="author">By ${item.author}</p>
           <span class="genre">${item.genre}</span>
@@ -138,6 +156,18 @@ async function loadWishlist() {
       `;
       wishlistGrid.innerHTML += wishlistItem;
     });
+  });
+}
+
+function filterWishlistByGenre(genre) {
+  const wishlistItems = document.querySelectorAll('.wishlist-item');
+  
+  wishlistItems.forEach((item) => {
+    if (genre === 'all' || item.dataset.genre === genre) {
+      item.classList.remove('hidden');
+    } else {
+      item.classList.add('hidden');
+    }
   });
 }
 

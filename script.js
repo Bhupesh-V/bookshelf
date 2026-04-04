@@ -34,7 +34,7 @@ function createBookHTML(book) {
     : "";
 
   return `
-    <div class="book ${book.recommended ? "recommended" : ""}">
+    <div class="book ${book.recommended ? "recommended" : ""}" data-genre="${book.genre}">
       <p style="font-weight: bold;">${book.title}</p>
       <p><strong>By</strong> <i>${book.author}</i></p>
       ${thoughtsButton}
@@ -42,10 +42,38 @@ function createBookHTML(book) {
   `;
 }
 
+// Generic filter function for any items with data-genre attribute
+function filterByGenre(genre, containerSelector, itemSelector) {
+  const items = document.querySelectorAll(`${containerSelector} ${itemSelector}`);
+  
+  items.forEach((item) => {
+    if (genre === 'all' || item.dataset.genre === genre) {
+      item.classList.remove('hidden');
+    } else {
+      item.classList.add('hidden');
+    }
+  });
+}
+
+// Populate genre dropdown options
+function populateGenreDropdown(genres, selectId) {
+  const genreSelect = document.getElementById(selectId);
+  
+  Object.keys(genres)
+    .sort()
+    .forEach((genre) => {
+      const option = document.createElement('option');
+      option.value = genre;
+      option.textContent = genre;
+      genreSelect.appendChild(option);
+    });
+}
+
 async function loadBooks() {
   fetchBooks().then((books) => {
     const booksTableBody = document.getElementById("books-table-body");
     const genres = {};
+    const genreCounts = {};
     let onTheShelfCount = 0;
     let currentlyReadingCount = 0;
     let finishedReadingCount = 0;
@@ -59,6 +87,8 @@ async function loadBooks() {
           read: "",
         };
       }
+      
+      genreCounts[book.genre] = (genreCounts[book.genre] || 0) + 1;
 
       const bookHTML = createBookHTML(book);
 
@@ -88,7 +118,7 @@ async function loadBooks() {
     // Add rows to the table for each genre
     for (const genre in genres) {
       booksTableBody.innerHTML += `
-        <tr>
+        <tr data-genre="${genre}">
           <td><strong>${genre}</strong></td>
           <td>${genres[genre].on_the_shelf || ""}</td>
           <td>${genres[genre].currently_reading || ""}</td>
@@ -96,6 +126,14 @@ async function loadBooks() {
         </tr>
       `;
     }
+
+    // Populate bookshelf genre filter dropdown
+    populateGenreDropdown(genreCounts, 'bookshelf-genre-select');
+
+    // Add change event listener to bookshelf dropdown
+    document.getElementById('bookshelf-genre-select').addEventListener('change', (e) => {
+      filterByGenre(e.target.value, '#books-table-body', 'tr[data-genre]');
+    });
   });
 }
 
@@ -104,7 +142,6 @@ async function loadWishlist() {
     const wishlistGrid = document.getElementById("wishlist-grid");
     const wishlistCount = document.getElementById("wishlist-count");
     const genreList = document.getElementById("genre-list");
-    const genreSelect = document.getElementById("genre-select");
 
     // Update the count
     wishlistCount.textContent = wishlist.length;
@@ -129,19 +166,12 @@ async function loadWishlist() {
         genreList.innerHTML += genreItem;
       });
 
-    // Populate dropdown options
-    Object.keys(genreCounts)
-      .sort()
-      .forEach((genre) => {
-        const option = document.createElement('option');
-        option.value = genre;
-        option.textContent = genre;
-        genreSelect.appendChild(option);
-      });
+    // Populate wishlist genre filter dropdown
+    populateGenreDropdown(genreCounts, 'wishlist-genre-select');
 
-    // Add change event listener to dropdown
-    genreSelect.addEventListener('change', (e) => {
-      filterWishlistByGenre(e.target.value);
+    // Add change event listener to wishlist dropdown
+    document.getElementById('wishlist-genre-select').addEventListener('change', (e) => {
+      filterByGenre(e.target.value, '#wishlist-grid', '.wishlist-item');
     });
 
     // Populate wishlist items
@@ -160,15 +190,7 @@ async function loadWishlist() {
 }
 
 function filterWishlistByGenre(genre) {
-  const wishlistItems = document.querySelectorAll('.wishlist-item');
-  
-  wishlistItems.forEach((item) => {
-    if (genre === 'all' || item.dataset.genre === genre) {
-      item.classList.remove('hidden');
-    } else {
-      item.classList.add('hidden');
-    }
-  });
+  filterByGenre(genre, '#wishlist-grid', '.wishlist-item');
 }
 
 async function updateLastUpdatedTime() {

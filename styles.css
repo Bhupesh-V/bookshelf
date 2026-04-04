@@ -246,6 +246,11 @@ p {
   display: none;
 }
 
+/* Table row hiding for genre filter */
+tr[data-genre].hidden {
+  display: none;
+}
+
 /* Modal Styles */
 .modal {
   display: none;
